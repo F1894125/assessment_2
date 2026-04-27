@@ -1,5 +1,13 @@
 import re
 
+########## CUSTOM EXCEPTIONS ##########
+class InvalidInputError(Exception):
+    """
+    Custom exception for invalid input.
+    """
+    def __init__(self, message):
+        super().__init__(message)
+
 ########## GLOBAL CONSTANTS ##########
 HOURS_THRESHOLD: int = 50
 
@@ -72,11 +80,31 @@ departments: dict = {}
 employees: dict = {}
 
 ########## FUNCTIONS TO IMPLEMENT OPERATIONS ##########
+def validate_input(pattern: str, value: str, error_message: str):
+    """
+    Validates the input value against the provided regex pattern.
+    If the value does not match the pattern, an InvalidInputError is raised.
+    
+    Args:
+        pattern (str): The regex pattern to validate against.
+        value (str): The input value to be validated.
+        error_message (str): The error message to be used in the exception if validation fails.
+    
+    Returns:
+        str: The validated input value if it matches the pattern.
+    
+    Raises:
+        InvalidInputError: If the input value does not match the regex pattern.
+    """
+    if not re.fullmatch(pattern, value):
+        raise InvalidInputError(error_message)
+    return value
+
 def add_department(**new_departments):
     """
-    Function to create a new employee object.
+    Function to create a new department object.
     """
-    for d_id, name in new_departments:
+    for d_id, name in new_departments.items():
         new_department: Department = Department(name=name)
         departments[d_id] = new_department
 
@@ -87,27 +115,31 @@ def add_employee():
     """
     while True:
         e_id: str = input("Enter ID of the new employee: ")
-        if re.fullmatch(r"\d{4}", e_id):
-            print(f"\n'{e_id}' accepted as employee employee ID.")
+        try:
+            e_id = validate_input(r"\d{4}", e_id, "Field should be only have 4 NUMERIC characters.")
+            print(f"\n'{e_id}' accepted as employee ID.")
             break
-        else:
-            print(f"\n'{e_id}' is invalid, field should be only have 4 NUMERIC characters.")
+        except InvalidInputError as e:
+            print(f"\nError: {e}")
 
     while True:
         name: str = input("Enter name of the new employee: ").strip().title()
-        if re.fullmatch(r"[a-zA-Z]+", name):
+        try:
+            name = validate_input(r"[a-zA-Z]+", name, "Field should be only ALPHABETIC.")
             print(f"\n'{name}' accepted as employee name.")
             break
-        else:
-            print(f"\n'{name}' is invalid, field should be only ALPHABETIC.")
+        except InvalidInputError as e:
+            print(f"\nError: {e}")
     
     while True:
         d_id: str = input(f"Enter department ID for {name}: ")
-        if re.fullmatch(r"\d{3}", d_id):
-            print(f"\n'{d_id}' accepted as department name.")
-            break
+        try:
+            d_id = validate_input(r"\d{3}", d_id, "Field should be only have 3 NUMERIC characters.")
+        except InvalidInputError as e:
+            print(f"\nError: {e}")
         else:
-            print(f"\n'{d_id}' is invalid, field should be only ALPHABETIC.")
+            print(f"\n'{d_id}' accepted as department ID.")
+            break
     
     while True:
         hours: str = input(f"Enter hours worked by {name}: ")
@@ -157,25 +189,25 @@ def menu():
 
             while True:
                 while True:
-                    d_id = input("Enter ID of the new department: ")
+                    d_id = input("\nEnter ID of the new department: ")
                     if re.fullmatch(r"\d{3}", d_id):
-                        print(f"\n'{d_id}' accepted as department ID.")
+                        print(f"'{d_id}' accepted as department ID.")
                         break
                     else:
-                        print(f"\n'{d_id}' is invalid, field should be only have 3 NUMERIC characters.")
+                        print(f"'{d_id}' is invalid, field should be only have 3 NUMERIC characters.")
 
                 while True:
-                    name = input("Enter name of the new department: ").strip().title()
+                    name = input("\nEnter name of the new department: ").strip().title()
                     if re.fullmatch(r"[a-zA-Z]+", name):
-                        print(f"\n'{name}' accepted as department name.")
+                        print(f"'{name}' accepted as department name.")
                         break
                     else:
-                        print(f"\n'{name}' is invalid, field should be only ALPHABETIC.")
+                        print(f"'{name}' is invalid, field should be only ALPHABETIC.")
                 
                 new_departments[d_id] = name
                 
-                opt: str = input("\nEnter 'y'/'Y' to add another department: ").strip().lower()
-                if opt == 'y':
+                opt: str = input("\nEnter 'n'/'N' to stop adding another department: ").strip().lower()
+                if opt == 'n':
                     break
             
             add_department(**new_departments)
