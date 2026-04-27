@@ -1,11 +1,21 @@
 import re
 
+########## ASSESSMENT 2 - EMPLOYEE WORK ANALYSIS SYSTEM #########
+# Features implemented:
+# 1. Custom error handling for invalid input.
+
+# 2. Pattern-based input validation using regular expressions.
+
+# 3. Lazy-data processing using generators to display employees
+#    who worked more than a specified number of hours and to calculate
+#    total hours worked by department.
+
 ########## CUSTOM EXCEPTIONS ##########
 class InvalidInputError(Exception):
     """
     Custom exception for invalid input.
     """
-    def __init__(self, message):
+    def __init__(self, message: str = "Invalid input provided."):
         super().__init__(message)
 
 ########## GLOBAL CONSTANTS ##########
@@ -78,6 +88,7 @@ class Employee:
 ########## MAPPINGS TO DEPARTMENTS AND EMPLOYEES ##########
 departments: dict = {}
 employees: dict = {}
+# Department and employee objects are stored in dictionaries for automatic de-duplication and fast access.
 
 ########## FUNCTIONS TO IMPLEMENT OPERATIONS ##########
 def validate_input(pattern: str, value: str, error_message: str):
@@ -154,12 +165,20 @@ def add_employee():
 
 def more_than_hour_threshold():
     """
-    Displays employees who worked more than the hour threshold.
+    Generator that displays employees who worked more than the hour threshold.
     """
     print('\n', '-'*40, f'Employees who worked more than {HOURS_THRESHOLD} hours', '-'*40)
     for e_id, employee in employees.items():
         if employee.hours > HOURS_THRESHOLD:
-            print(f"{e_id} - {employee.name} worked {employee.hours}.")
+            yield employee
+
+def total_hours_worked_by_department():
+    """
+    Generator that yields a tuple containing department-wise total hours worked by all employees.
+    """
+    for department in departments.values():
+        total_hours: int = sum(employee.hours for employee in employees.values() if employee.dept == department)
+        yield (department, total_hours)
 
 
 def display_all_departments():
@@ -179,7 +198,8 @@ def menu():
         print("2. Add a new employee.")
         print("3. Display all departments.")
         print("4. Display employees who worked more hours than the threshold.")
-        print("5. Terminate")
+        print("5. Display total hours worked by department.")
+        print("6. Terminate")
         choice = input("Enter your choice (1-5): ")
 
         if choice == '1':
@@ -214,13 +234,22 @@ def menu():
 
         elif choice == '2':
             add_employee()
+        
         elif choice == '3':
             display_all_departments()
+        
         elif choice == '4':
-            more_than_hour_threshold()
+            for employee in more_than_hour_threshold():
+                print(employee)
+        
         elif choice == '5':
+            for department, total_hours in total_hours_worked_by_department():
+                print(f"{department.name}: {total_hours} hours")
+        
+        elif choice == '6':
             print("Terminating program. Goodbye!")
             break
+
         else:
             print("Invalid choice. Please enter a number between 1 and 5.")
 
