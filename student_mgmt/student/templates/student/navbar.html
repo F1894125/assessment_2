@@ -1,0 +1,11 @@
+{% load static %}
+
+<header class="header">
+    <nav>
+        <ul>
+            <li><a href="{% url 'student:home' %}">Home</a></li>
+            <li><a href="{% url 'student:add_student' %}">Add Student</a></li>
+            <li><a href="{% url 'student:display_students' %}">Display Students</a></li>
+        </ul>
+    </nav>
+</header>

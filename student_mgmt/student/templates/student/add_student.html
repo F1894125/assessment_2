@@ -1,0 +1,36 @@
+{% extends "student/base.html" %}
+
+
+{% block title %}
+    <title>Add Student</title>
+{% endblock title %}
+
+
+{% block content %}
+    {% if messages %} <!-- Check if there are any messages to display -->
+        {% for message in messages %}
+            <div class="alert {{ message.tags}}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <h1 class="h1_body">Add a New Student</h1>
+    <form class="form_body" action="" method="POST">
+        {% csrf_token %} <!-- Cross-Site Request Forgery token for security -->
+        <label for="id">ID:</label>
+        <input type="text" name="id" id="id">
+
+        <label for="name">Name:</label>
+        <input type="text" name="name" id="name">
+
+        <label for="email">Email:</label>
+        <input type="text" name="email" id="email">
+
+        <label for="course_name">Course Name:</label>
+        <input type="text" name="course_name" id="course_name">
+
+        <label for="marks">Marks:</label>
+        <input type="text" name="marks" id="marks">
+
+        <button type="submit">Submit</button>
+    </form>
+{% endblock content %}

@@ -1,0 +1,48 @@
+{% extends "student/base.html" %}
+
+
+{% block title %}
+    <title>Display Students</title>
+{% endblock title %}
+
+
+{% block content %}
+    {% if messages %} <!-- Check if there are any messages to display -->
+        {% for message in messages %}
+            <div class="alert {{ message.tags}}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <h1 class="h1_body">Displaying all Students</h1>
+    <div class="existing_list">
+        <h2 class="h2_body">Existing Students</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>E-mail Address</th>
+                    <th>Course Name</th>
+                    <th>Marks</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if students %}
+                    {% for student in students %}
+                    <tr>
+                        <td>{{ student.id }}</td>
+                        <td>{{ student.name }}</td>
+                        <td>{{ student.email }}</td>
+                        <td>{{ student.course_name }}</td>
+                        <td>{{ student.marks }}</td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="5">No students found.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+{% endblock content %}
