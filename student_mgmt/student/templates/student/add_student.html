@@ -8,6 +8,10 @@
 
 {% block content %}
     {% if messages %} <!-- Check if there are any messages to display -->
+    {% comment %}
+        Messages are included automatically by Django when we use the messages framework to send feedback to the user.
+        They can be used to display any kind of messages, like the ones we included in our views for successful student addition.
+    {% endcomment %}
         {% for message in messages %}
             <div class="alert {{ message.tags}}">{{ message }}</div>
         {% endfor %}
@@ -15,7 +19,14 @@
 
     <h1 class="h1_body">Add a New Student</h1>
     <form class="form_body" action="" method="POST">
-        {% csrf_token %} <!-- Cross-Site Request Forgery token for security -->
+        {% csrf_token %}
+        {% comment %}
+            Forms are used to collect user input.
+            The input fields are sent via a POST request to the server for processing.
+            The destination is the URL defined in the "action" attribute of the form tag.
+            Since the "action" attribute is empty, the form will submit to the current URL.
+            We use CSRF tokens to ensure that the form was ONLY submitted from our site and no one else is imposing as us.
+        {% endcomment %}
         <label for="id">ID:</label>
         <input type="text" name="id" id="id">
 
@@ -31,6 +42,6 @@
         <label for="marks">Marks:</label>
         <input type="text" name="marks" id="marks">
 
-        <button type="submit">Submit</button>
+        <button type="submit">Submit</button> <!-- A submit button is necessary to submit the form -->
     </form>
 {% endblock content %}

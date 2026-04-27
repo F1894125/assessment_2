@@ -7,7 +7,7 @@
 
 
 {% block content %}
-    {% if messages %} <!-- Check if there are any messages to display -->
+    {% if messages %}
         {% for message in messages %}
             <div class="alert {{ message.tags}}">{{ message }}</div>
         {% endfor %}
@@ -28,6 +28,11 @@
             </thead>
             <tbody>
                 {% if students %}
+                    {% comment %}
+                        We loop through the list of students passed from the view and display their details in a table format.
+                        If there are no students, we display a message indicating that no students were found.
+                        'students' is the context variable that we passed from the view, which contains the list of all student records retrieved from the database.
+                    {% endcomment %}
                     {% for student in students %}
                     <tr>
                         <td>{{ student.id }}</td>

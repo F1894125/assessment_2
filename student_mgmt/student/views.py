@@ -3,6 +3,10 @@ from django.contrib import messages
 from django.http import HttpResponse, HttpRequest
 from .models import Student
 
+# Here we define the logic for the views corresponding to each path in the 'student' app.
+# These views form the 'V' in the MVT architecture of Django.
+# The views interact with the models to retrieve or manipulate data and then render the appropriate templates.
+
 def home(request: HttpRequest) -> HttpResponse:
     """
     Function-based view that renders the home page of the student management application.

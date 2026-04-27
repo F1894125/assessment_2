@@ -1,3 +1,6 @@
+/* This CSS file is used to style the HTML templates of the student management system.*/
+/* This defines the overall look and feel of the web application, including colors, fonts, layout, and responsiveness.*/
+
 * {
     margin: 5px; /* This adds a small margin around all elements to prevent them from sticking to the edges of the page */
     padding: 5px; /* This adds a small padding inside all elements to prevent the content from sticking to the edges of the elements */

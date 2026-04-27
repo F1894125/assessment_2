@@ -1,12 +1,26 @@
 {% load static %}
 
+{% comment %}
+    Templates in Django are used to define the structure and layout of the HTML pages that will be rendered to the user.
+    We use Jinja templating language to create dynamic content in our HTML pages.
+    Jinja templates allow us to include variables, control structures (like loops and conditionals), and template inheritance to create reusable components.
+    This is not possible with plain HTML, which is static and cannot change based on user input or other dynamic data.
+
+    This particular template builds the base structure for all other templates by providing elements that will be common to all pages.
+    This enables reusability and enforces the DRY (Don't Repeat Yourself) principle.
+{% endcomment %}
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <link rel="stylesheet" href="{% static 'css/style.css' %}"> <!-- We include the CSS file for styling -->
         {% block title %}
+        {% comment %}
+            These are called Jinja template blocks.
+            They allow child templates to override specific sections of the parent template by acting as placeholders.   
+        {% endcomment %}
         {% endblock title %}
     </head>
     <body>
